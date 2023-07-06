@@ -16,7 +16,6 @@ class Course(models.Model):
         """Класс мета настроек"""
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
-        ordering = ('name')
 
 class Lesson(models.Model):
     """Класс описания модели урока"""
@@ -32,4 +31,3 @@ class Lesson(models.Model):
         """Класс мета настроек"""
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
-        ordering = ('name')
