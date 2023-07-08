@@ -1,0 +1,6 @@
+Django
+Pillow
+tzdata
+python-dotenv
+djangorestframework
+asgiref
