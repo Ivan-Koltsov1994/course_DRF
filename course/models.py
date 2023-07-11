@@ -19,7 +19,7 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     """Класс описания модели урока"""
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='название курса')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='название курса', **NULLABLE)
     name = models.CharField(max_length=150,verbose_name="название урока", **NULLABLE)
     preview =models.ImageField(upload_to="course/",verbose_name="изображение", **NULLABLE)
     description = models.TextField(verbose_name='описание', **NULLABLE)
