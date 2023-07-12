@@ -3,12 +3,19 @@ from rest_framework import serializers
 from course.models import Course, Lesson, Paying
 
 
+class LessonSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+
 class CourseSerializer(serializers.ModelSerializer):
     lessons_count = serializers.SerializerMethodField() #  поле вывода количества уроков в курсе
+    lessons = LessonSerializer(source='lesson_set', many=True, read_only=True,)#  поле вывода уроков курса
 
     class Meta:
         model = Course
-        fields = '__all__'
+        fields = ('id', 'name', 'preview', 'description', 'lessons', 'lessons_count')
 
     def get_lessons_count(self, instance):
         # метод определяет количество уроков в курсе
@@ -16,12 +23,6 @@ class CourseSerializer(serializers.ModelSerializer):
         if lessons:
             return lessons.count()
         return 0
-
-class LessonSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Lesson
-        fields = '__all__'
 
 class PayingSerializers(serializers.ModelSerializer):
     class Meta:
