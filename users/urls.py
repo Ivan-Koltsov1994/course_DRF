@@ -6,7 +6,7 @@ from users.apps import UsersConfig
 app_name = UsersConfig.name
 
 router = DefaultRouter()
-router.register(r'user', UserViewSet, basename='user')
+router.register(r'users', UserViewSet, basename='users')
 
 urlpatterns = [
 
