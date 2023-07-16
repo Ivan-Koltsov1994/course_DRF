@@ -1,10 +1,29 @@
-from rest_framework import viewsets
+from rest_framework import  generics
 
 from users.models import User
-from users.serializers import UserSerializer
+from users.serializers import ForAuthUserSerializers, ForCreateUserSerializers
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
+class UsersListView(generics.ListAPIView):
+    serializer_class = ForAuthUserSerializers
     queryset = User.objects.all()
-    http_method_names = ['get', 'post', 'head']
+
+class UsersDetailView(generics.RetrieveAPIView):
+    serializer_class = ForAuthUserSerializers
+    queryset = User.objects.all()
+
+class UsersCreateView(generics.CreateAPIView):
+    serializer_class = ForCreateUserSerializers
+    queryset = User.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(pk=user.id)
+
+class UsersUpdateView(generics.UpdateAPIView):
+    serializer_class = ForCreateUserSerializers
+    queryset = User.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(pk=user.id)
