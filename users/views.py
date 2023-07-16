@@ -23,7 +23,7 @@ class UsersCreateView(generics.CreateAPIView):
 class UsersUpdateView(generics.UpdateAPIView):
     serializer_class = ForCreateUserSerializers
     queryset = User.objects.all()
-
+    
     def get_queryset(self):
         user = self.request.user
         return User.objects.filter(pk=user.id)
