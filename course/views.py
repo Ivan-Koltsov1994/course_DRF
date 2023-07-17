@@ -9,12 +9,28 @@ from rest_framework.permissions import IsAuthenticated
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    permission_classes = [IsAuthenticated | UserPermissionsModerator | UserPermissionsOwner]
+    permission_classes = [IsAuthenticated]
+
+    # Выводит список курсов модераторам, владельцам только созданные им курсы
+    def get_queryset(self):
+        user = self.request.user
+        if request.user.is_staff or request.user.role == UserRoles.MODERATOR or user.is_superuser:
+            return Course.objects.all()
+        else:
+            return Course.objects.filter(owner=user)
 
 class LessonListView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated | UserPermissionsModerator | UserPermissionsOwner]
+    permission_classes = [IsAuthenticated]
+
+    #Выводит список уроков модераторам, владельцам только созданные им уроки
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff or user.is_superuser or user.role == UserRoles.MODERATOR:
+            return Course.objects.all()
+        else:
+            return Course.objects.filter(owner=user)
 
 class LessonCreateView(generics.CreateAPIView):
     serializer_class = LessonSerializer

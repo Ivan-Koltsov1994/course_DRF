@@ -7,7 +7,7 @@ class UserPermissionsModerator(permissions.BasePermission):
     message = 'Вы являетесь модератором...'
 
     def has_permission(self, request, view):
-        if request.user.is_staff or request.user.role == UserRoles.MODERATOR:
+        if request.user.is_staff or request.user.role == UserRoles.MODERATOR or user.is_superuser:
             if view.action in ['list', 'retrieve', 'update', 'partial_update']:
                 return True
         return False
@@ -15,8 +15,8 @@ class UserPermissionsModerator(permissions.BasePermission):
 class UserPermissionsOwner(permissions.BasePermission):
     message = 'Вы  вляетесь владельцем...'
 
-    def has_permission(self, request, view):
-        if request.user == obj.author:
+    def has_object_permission(self, request, view, obj):
+        if request.user == obj.owner:
             if view.action in ['list',  'retrieve', 'update', 'partial_update', 'destroy','create']:
                 return True
         return False
