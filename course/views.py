@@ -14,7 +14,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     # Выводит список курсов модераторам, владельцам только созданные им курсы
     def get_queryset(self):
         user = self.request.user
-        if request.user.is_staff or request.user.role == UserRoles.MODERATOR or user.is_superuser:
+        if user.is_staff or user.role == UserRoles.MODERATOR or user.is_superuser:
             return Course.objects.all()
         else:
             return Course.objects.filter(owner=user)
