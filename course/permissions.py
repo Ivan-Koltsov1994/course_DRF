@@ -16,6 +16,10 @@ class UserPermissionsOwner(permissions.BasePermission):
     message = 'Вы  вляетесь владельцем...'
 
     def has_object_permission(self, request, view, obj):
+        # Запретить действия над объектами, если пользователь не аутентифицирован
+        if not request.user.is_authenticated():
+            return False
+
         if request.user == obj.owner:
             if view.action in ['list',  'retrieve', 'update', 'partial_update', 'destroy','create']:
                 return True
