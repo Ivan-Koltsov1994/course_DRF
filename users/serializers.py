@@ -3,13 +3,15 @@ from rest_framework import serializers
 from course.models import Paying
 from users.models import User
 
+
 class UserPayingSerializers(serializers.ModelSerializer):
     class Meta:
         model = Paying
         fields = "__all__"
 
+
 class UserSerializer(serializers.ModelSerializer):
-    paying = UserPayingSerializers(source='paying_set', many=True, read_only=True,)
+    paying = UserPayingSerializers(source='paying_set', many=True, read_only=True, )
 
     def create(self, validated_data):
         paying = validated_data.pop('payment_set')
@@ -22,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'email', 'phone', 'city','paying', 'role')
+        fields = ('id', 'name', 'email', 'phone', 'city', 'paying', 'role')
 
 
 class ForAuthUserSerializers(serializers.ModelSerializer):

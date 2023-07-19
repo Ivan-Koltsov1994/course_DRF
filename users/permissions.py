@@ -1,10 +1,8 @@
-from rest_framework.permissions import BasePermission
 from rest_framework import permissions
 
 
 class IsUserProfile(permissions.BasePermission):
     # Запретить действия над объектами, если пользователь не аутентифицирован
-
 
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated():
