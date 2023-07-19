@@ -6,6 +6,9 @@ from course.serializers import CourseSerializer, LessonSerializer, PayingSeriali
 from course.permissions import UserPermissionsModerator, UserPermissionsOwner
 from rest_framework.permissions import IsAuthenticated
 
+from users.models import UserRoles
+
+
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
