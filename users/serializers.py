@@ -22,6 +22,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id','name','email', 'phone', 'city','paying')
+        fields = ('id', 'name', 'email', 'phone', 'city','paying', 'role')
 
 
+class ForAuthUserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'phone', 'city')
+
+
+class ForCreateUserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

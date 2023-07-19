@@ -10,6 +10,7 @@ class Course(models.Model):
     name = models.CharField(max_length=150, verbose_name="название курса", **NULLABLE)
     preview = models.ImageField(upload_to="course/", verbose_name="изображение", **NULLABLE)
     description = models.TextField(verbose_name='описание', **NULLABLE)
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
 
     def __str__(self):
         return f'{self.name}'
@@ -26,6 +27,7 @@ class Lesson(models.Model):
     name = models.CharField(max_length=150, verbose_name="название урока", **NULLABLE)
     preview = models.ImageField(upload_to="course/", verbose_name="изображение", **NULLABLE)
     description = models.TextField(verbose_name='описание', **NULLABLE)
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
 
     def __str__(self):
         return f'{self.name}'
