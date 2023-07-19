@@ -2,8 +2,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import UserManager as UserBaseManager
-from course.models import NULLABLE
 from django.apps import apps
+
+NULLABLE = {'null': True, 'blank': True}
 
 class UserCManager(UserBaseManager):
     """переопределение модели для команды python manage.py createsuperuser (для поля email)"""
@@ -50,7 +51,6 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = UserCManager()
 
     class Meta:
         verbose_name = 'Пользователь'
