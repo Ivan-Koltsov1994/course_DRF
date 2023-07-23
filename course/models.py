@@ -64,3 +64,14 @@ class Paying(models.Model):
         """Класс мета настроек"""
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
+
+class Subscription(models.Model):
+    """Класс описания модели статуса подписки пользователя"""
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='наименование курса')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
+    status = models.BooleanField(default=True, verbose_name='статус подписки')
+
+    class Meta:
+        """Класс мета настроек"""
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
