@@ -87,14 +87,14 @@ class PayingUpdateView(generics.UpdateAPIView):
 class SubscriptionCreateView(generics.CreateAPIView):
     serializer_class = SubscriptionSerializers
     queryset = Subscription.objects.all()
-    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+    permission_classes = [IsAuthenticated]
 
 class SubscriptionDeleteView(generics.DestroyAPIView):
     serializer_class = SubscriptionSerializers
     queryset = Subscription.objects.all()
-    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+    permission_classes = [IsAuthenticated]
 
 class SubscriptionUpdateView(generics.UpdateAPIView):
     serializer_class = SubscriptionSerializers
-    queryset = SubscriptionSerializers.objects.all()
-    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated]
