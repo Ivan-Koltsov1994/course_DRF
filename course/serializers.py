@@ -1,17 +1,19 @@
 from rest_framework import serializers
 
 from course.models import Course, Lesson, Paying
+from course.validators import UrlValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Lesson
         fields = '__all__'
+        validators = [UrlValidator(field='url_video')]  # Проверка требований валидации
+
 
 class CourseSerializer(serializers.ModelSerializer):
-    lessons_count = serializers.SerializerMethodField() #  поле вывода количества уроков в курсе
-    lessons = LessonSerializer(source='lesson_set', many=True, read_only=True,)#  поле вывода уроков курса
+    lessons_count = serializers.SerializerMethodField()  # поле вывода количества уроков в курсе
+    lessons = LessonSerializer(source='lesson_set', many=True, read_only=True, )  # поле вывода уроков курса
 
     class Meta:
         model = Course
@@ -23,6 +25,7 @@ class CourseSerializer(serializers.ModelSerializer):
         if lessons:
             return lessons.count()
         return 0
+
 
 class PayingSerializers(serializers.ModelSerializer):
     class Meta:
