@@ -1,8 +1,8 @@
 from rest_framework import generics, viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from course.models import Course, Lesson, Paying
-from course.serializers import CourseSerializer, LessonSerializer, PayingSerializers
+from course.models import Course, Lesson, Paying, Subscription
+from course.serializers import CourseSerializer, LessonSerializer, PayingSerializers, SubscriptionSerializers
 from course.permissions import UserPermissionsModerator, UserPermissionsOwner
 from rest_framework.permissions import IsAuthenticated
 
@@ -82,4 +82,19 @@ class PayingDetailView(generics.RetrieveAPIView):
 class PayingUpdateView(generics.UpdateAPIView):
     serializer_class = PayingSerializers
     queryset = Paying.objects.all()
+    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+
+class SubscriptionCreateView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializers
+    queryset = Subscription.objects.all()
+    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+
+class SubscriptionDeleteView(generics.DestroyAPIView):
+    serializer_class = SubscriptionSerializers
+    queryset = Subscription.objects.all()
+    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+
+class SubscriptionUpdateView(generics.UpdateAPIView):
+    serializer_class = SubscriptionSerializers
+    queryset = SubscriptionSerializers.objects.all()
     permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
