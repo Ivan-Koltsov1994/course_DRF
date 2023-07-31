@@ -8,6 +8,6 @@ class CoursePaginator(PageNumberPagination):
 
 class LessonPaginator(PageNumberPagination):
 
-    page_size = 1 # Количество элементов на странице
+    page_size = 2 # Количество элементов на странице
     page_size_query_param = 'page_size'  # Параметр запроса для указания коли
     max_page_size = 50  # Максимальное количество элементов на странице
