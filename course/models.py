@@ -69,7 +69,7 @@ class Subscription(models.Model):
     """Класс описания модели статуса подписки пользователя"""
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='наименование курса')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
-    status = models.BooleanField(default=True, verbose_name='статус подписки')
+    status = models.BooleanField(default=False, verbose_name='статус подписки')
 
     class Meta:
         """Класс мета настроек"""
