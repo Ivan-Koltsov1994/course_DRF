@@ -14,10 +14,11 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     lessons_count = serializers.SerializerMethodField()  # поле вывода количества уроков в курсе
     lessons = LessonSerializer(source='lesson_set', many=True, read_only=True, )  # поле вывода уроков курса
+    course_status = serializers.SerializerMethodField()  # поле вывода статуса подписки текущего пользователя на курс
 
     class Meta:
         model = Course
-        fields = ('id', 'name', 'preview', 'description', 'lessons', 'lessons_count')
+        fields = ('id', 'name', 'preview', 'description', 'lessons', 'lessons_count','course_status')
 
     def get_lessons_count(self, instance):
         # метод определяет количество уроков в курсе
@@ -25,6 +26,14 @@ class CourseSerializer(serializers.ModelSerializer):
         if lessons:
             return lessons.count()
         return 0
+
+    def get_course_status(self, instance):
+        # метод определяет статус подписки пользователя на текущий курс
+        user = self.context['request'].user.id
+        subscription = Subscription.objects.filter(course=instance, user=user)
+        if subscription:
+            return subscription.first().status
+        return False
 
 
 class PayingSerializers(serializers.ModelSerializer):
