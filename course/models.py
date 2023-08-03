@@ -27,6 +27,7 @@ class Lesson(models.Model):
     name = models.CharField(max_length=150, verbose_name="название урока", **NULLABLE)
     preview = models.ImageField(upload_to="course/", verbose_name="изображение", **NULLABLE)
     description = models.TextField(verbose_name='описание', **NULLABLE)
+    url_video = models.URLField(verbose_name='ссылка на видео', **NULLABLE)
     owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
 
     def __str__(self):
@@ -63,3 +64,14 @@ class Paying(models.Model):
         """Класс мета настроек"""
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
+
+class Subscription(models.Model):
+    """Класс описания модели статуса подписки пользователя"""
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='наименование курса')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
+    status = models.BooleanField(default=False, verbose_name='статус подписки')
+
+    class Meta:
+        """Класс мета настроек"""
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'

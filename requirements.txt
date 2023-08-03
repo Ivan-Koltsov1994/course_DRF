@@ -8,3 +8,4 @@ asgiref
 pyjwt
 djangorestframework-simplejwt
 django-filter
+coverage
