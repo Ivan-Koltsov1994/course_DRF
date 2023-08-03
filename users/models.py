@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import UserManager as UserBaseManager
 from django.apps import apps
-
+from django.utils.translation import gettext_lazy as _
 NULLABLE = {'null': True, 'blank': True}
 
 class UserCManager(UserBaseManager):
@@ -40,6 +40,10 @@ class UserCManager(UserBaseManager):
 
         return self._create_user(email, password, **extra_fields)
 
+class UserRoles(models.TextChoices):
+    MEMBER = 'member', _('member')
+    MODERATOR = 'moderator', _('moderator')
+
 class User(AbstractUser):
     username = None
 
@@ -47,11 +51,14 @@ class User(AbstractUser):
     phone = models.CharField(max_length=35, verbose_name='номер телефона')
     city = models.CharField(max_length=100, verbose_name='город')
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
+    role = models.CharField(max_length=9, choices=UserRoles.choices, **NULLABLE, default=UserRoles.MEMBER)
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-
+    objects = UserCManager()
+    
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
