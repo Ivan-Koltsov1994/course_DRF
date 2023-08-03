@@ -6,3 +6,4 @@ djangorestframework
 asgiref
 pyjwt
 djangorestframework-simplejwt
+django-filter
