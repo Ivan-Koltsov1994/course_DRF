@@ -9,3 +9,4 @@ pyjwt
 djangorestframework-simplejwt
 django-filter
 coverage
+drf-yasg
