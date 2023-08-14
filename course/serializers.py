@@ -46,3 +46,5 @@ class SubscriptionSerializers(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = "__all__"
+
+
