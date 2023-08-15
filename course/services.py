@@ -1,7 +1,9 @@
 import requests
+
+from config import settings
 from course.models import Paying
 
-api_key = "sk_test_51Nb0BxIDGBRzD8GuzDnoDu1cecExfHHcLMMDZQlc4oIV4PL9QI9KF04o9UdcrFuRwDrg198Kn4anWZrQMKEkqUev009MHWvQxH"
+api_key = settings.STRIPE_SECRET_KEY
 headers = {'Authorization': f'Bearer {api_key}'}
 base_url = 'https://api.stripe.com/v1'
 
