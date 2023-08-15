@@ -1,12 +1,17 @@
-from rest_framework import generics, viewsets
+import stripe
+from rest_framework import generics, viewsets, status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.views import APIView
+
 from course.models import Course, Lesson, Paying, Subscription
 from course.paginators import CoursePaginator, LessonPaginator
 from course.serializers import CourseSerializer, LessonSerializer, PayingSerializers, SubscriptionSerializers
 from course.permissions import UserPermissionsModerator, UserPermissionsOwner
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
+from course.services import create_paying, save_paying
 from users.models import UserRoles
 
 
@@ -77,25 +82,47 @@ class PayingListView(generics.ListAPIView):
 class PayingCreateView(generics.CreateAPIView):
     serializer_class = PayingSerializers
     queryset = Paying.objects.all()
-    permission_classes = [UserPermissionsOwner]
+    permission_classes = [IsAuthenticated]
+
+    # Добавляем создание платежа на сервисе Stripe
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        session = create_paying(
+            course=serializer.validated_data['course'],
+            user=self.request.user
+        )
+        serializer.save()
+        save_paying(course=serializer.validated_data['course'],
+                    user=self.request.user)
+        return Response(session['id'], status=status.HTTP_201_CREATED)
 
 
-class PayingDeleteView(generics.DestroyAPIView):
-    serializer_class = PayingSerializers
-    queryset = Paying.objects.all()
-    permission_classes = [UserPermissionsOwner]
+class GetPayingView(APIView):
+    """Получение информации о платеже с сервиса stripe"""
+
+    def get(self, request, payment_id):
+        payment_intent = stripe.PaymentIntent.retrieve(payment_id)
+        return Response({
+            'status': payment_intent.status, })
 
 
-class PayingDetailView(generics.RetrieveAPIView):
-    serializer_class = PayingSerializers
-    queryset = Paying.objects.all()
-    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
-
-
-class PayingUpdateView(generics.UpdateAPIView):
-    serializer_class = PayingSerializers
-    queryset = Paying.objects.all()
-    permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+# class PayingDeleteView(generics.DestroyAPIView):
+#     serializer_class = PayingSerializers
+#     queryset = Paying.objects.all()
+#     permission_classes = [UserPermissionsOwner]
+#
+#
+# class PayingDetailView(generics.RetrieveAPIView):
+#     serializer_class = PayingSerializers
+#     queryset = Paying.objects.all()
+#     permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
+#
+#
+# class PayingUpdateView(generics.UpdateAPIView):
+#     serializer_class = PayingSerializers
+#     queryset = Paying.objects.all()
+#     permission_classes = [UserPermissionsModerator | UserPermissionsOwner]
 
 
 class SubscriptionCreateView(generics.CreateAPIView):

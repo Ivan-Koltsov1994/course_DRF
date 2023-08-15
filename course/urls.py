@@ -2,8 +2,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from course.views import CourseViewSet, LessonListView, LessonCreateView, LessonDetailView, LessonUpdateView, \
-    LessonDeleteView, PayingListView, PayingCreateView, PayingDetailView, PayingUpdateView, PayingDeleteView, \
-    SubscriptionCreateView, SubscriptionUpdateView, SubscriptionDeleteView
+    LessonDeleteView, PayingListView, PayingCreateView,  \
+    SubscriptionCreateView, SubscriptionUpdateView, SubscriptionDeleteView, GetPayingView
 
 router = DefaultRouter()
 router.register(r'course', CourseViewSet, basename='course')
@@ -19,9 +19,7 @@ urlpatterns =[
     #Paying
     path('paying/', PayingListView.as_view(), name='paying_list'),
     path('paying/create/', PayingCreateView.as_view(), name='paying_create'),
-    path('paying/detail/<int:pk>/', PayingDetailView.as_view(), name='paying_detail'),
-    path('paying/update/<int:pk>/', PayingUpdateView.as_view(), name='paying_update'),
-    path('paying/delete/<int:pk>/', PayingDeleteView.as_view(), name='paying_delete'),
+    path('payment/<str:payment_id>/', GetPayingView.as_view(), name='paying_get'),
 
     # Subscription
     path('subscription/create/', SubscriptionCreateView.as_view(), name='subscription_create'),
