@@ -178,4 +178,13 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 CELERY_BROKER_URL = 'redis://localhost:6379'  # URL-адрес брокера сообщений
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # URL-адрес брокера результатов
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_TIMEZONE = 'Europe/Moscow'# Часовой пояс для работы Celery
+CELERY_TASK_TRACK_STARTED = True # Флаг отслеживания выполнения задач
+CELERY_TASK_TIME_LIMIT = 30 * 60# Максимальное время на выполнение задачи
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'course.tasks.check_deactivate_user',  # Путь к задаче
+        'schedule': timedelta(minutes=5),  # Расписание выполнения задачи
+    },
+}
