@@ -14,4 +14,5 @@ requests
 stripe
 celery
 redis
+eventlet
 django_celery_beat
