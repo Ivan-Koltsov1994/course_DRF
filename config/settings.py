@@ -173,3 +173,9 @@ SIMPLE_JWT = {
 
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+
+# Настройки для celery
+CELERY_BROKER_URL = 'redis://localhost:6379'  # URL-адрес брокера сообщений
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # URL-адрес брокера результатов
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_TIMEZONE = 'Europe/Moscow'

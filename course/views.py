@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from course.services import create_paying, save_paying
+from course.tasks import send_mail_user_сourse_update
 from users.models import UserRoles
 
 
@@ -28,6 +29,15 @@ class CourseViewSet(viewsets.ModelViewSet):
             return Course.objects.all()
         else:
             return Course.objects.filter(owner=user)
+
+    def perform_create(self, serializer) -> None:
+        """Сохраняет новому объекту курса создателя"""
+        serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        """Переопределяет модель курса"""
+        self.object = serializer.save()
+        send_mail_user_сourse_update.delay(self.object.pk)
 
 
 class LessonListView(generics.ListAPIView):
