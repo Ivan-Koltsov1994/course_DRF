@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.10'
 
 services:
   db:
@@ -6,10 +6,10 @@ services:
     container_name: db
     env_file:
       - ./.env
-    image: postgres
+    image: postgres:14.9-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./.env.docker
     healthcheck:
       test: [ 'CMD-SHELL', 'pg_isready' ]
       interval: 10s
@@ -44,7 +44,7 @@ services:
       bash -c "python  manage.py collectstatic --noinput
       && python manage.py makemigrations
       && python manage.py migrate
-      && python manage.py loaddata data
+      && python manage.py loaddata data1.json
       && python manage.py runserver 0.0.0.0:8000"
 
   celery:

@@ -1,11 +1,9 @@
-FROM python:3.11-slim
+FROM python:3.11
 
-WORKDIR /app_DRF
+WORKDIR ./app
 
-COPY requirements.txt /app_DRF/
+COPY ./requirements.txt /app/
 
-RUN pip install -r requirements.txt
+RUN pip install -r /app/requirements.txt
 
-COPY . /app_DRF/
-
-CMD ["python", "manage.py", "runserver"]
+COPY . .
